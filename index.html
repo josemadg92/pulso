@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#07060C" />
+    <title>PULSO — Experiencias electrónicas en Madrid</title>
+    <meta
+      name="description"
+      content="PULSO es una productora creativa de Madrid. Organizamos noches de música electrónica con luz, proyección y escenografía en naves, terrazas y galerías."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/base.css" />
+    <link rel="stylesheet" href="/src/styles/hero.css" />
+    <link rel="stylesheet" href="/src/styles/manifesto.css" />
+    <link rel="stylesheet" href="/src/styles/art.css" />
+    <link rel="stylesheet" href="/src/styles/events.css" />
+    <link rel="stylesheet" href="/src/styles/gallery.css" />
+    <link rel="stylesheet" href="/src/styles/collab.css" />
+  </head>
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+
+    <header class="nav" data-nav>
+      <a class="nav__logo" href="#inicio" aria-label="PULSO, inicio">
+        <span>PULSO</span>
+        <svg class="nav__wave" viewBox="0 0 48 16" aria-hidden="true">
+          <path d="M0 8h14l3-6 4 12 4-12 3 6h20" />
+        </svg>
+      </a>
+
+      <nav class="nav__links" id="menu" aria-label="Principal">
+        <a href="#eventos">Eventos</a>
+        <a href="#manifiesto">Manifiesto</a>
+        <a href="#galeria">Galería</a>
+        <a href="#colabora">Colabora</a>
+      </nav>
+
+      <div class="nav__actions">
+        <a class="btn btn--glow btn--sm" href="#eventos">Entradas</a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+          <span class="sr-only">Abrir menú</span>
+          <span class="nav__toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero__screen" data-screen>
+          <canvas class="hero__canvas" data-canvas aria-hidden="true"></canvas>
+          <div class="hero__scan" aria-hidden="true"></div>
+
+          <p class="hero__kicker" data-reveal>
+            <span class="mono">Productora creativa</span>
+            <span class="mono">Madrid · Temporada 26/27</span>
+          </p>
+
+          <ul class="hero__axes mono" aria-label="Lo que mezclamos" data-reveal>
+            <li>Música</li>
+            <li>Luz</li>
+            <li>Proyección</li>
+            <li>Materia</li>
+            <li>Espacio</li>
+          </ul>
+        </div>
+
+        <h1 class="hero__title" id="hero-title" data-title>
+          <span class="sr-only">PULSO</span>
+          <span class="hero__layer hero__layer--sodio" aria-hidden="true" data-layer="0">PULSO</span>
+          <span class="hero__layer hero__layer--uv" aria-hidden="true" data-layer="1">PULSO</span>
+          <span class="hero__layer hero__layer--tinta" aria-hidden="true" data-layer="2">PULSO</span>
+        </h1>
+
+        <div class="hero__foot">
+          <p class="hero__lede" data-reveal>
+            Música electrónica en naves, terrazas y galerías. Luz, proyección y escenografía. Para que tu noche no
+            se parezca a ninguna otra.
+          </p>
+
+          <div class="hero__ctas" data-reveal>
+            <a class="btn btn--glow" href="#eventos">
+              Ver próximos eventos
+              <svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+            </a>
+            <a class="btn btn--ghost" href="#manifiesto">Manifiesto</a>
+          </div>
+
+          <a class="next" href="#eventos" data-reveal>
+            <span class="next__live mono"><span class="next__dot" aria-hidden="true"></span>Próximo</span>
+            <span class="next__name">NAVE 04 — Sodio</span>
+            <span class="next__meta mono">14.11.26 · Villaverde, Madrid</span>
+            <span class="next__bar" aria-label="82% de entradas vendidas"><span style="--sold: 0.82"></span></span>
+            <span class="next__cta mono">Entradas →</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="manifesto" id="manifiesto" aria-labelledby="manifesto-title" data-manifesto>
+        <div class="manifesto__sticky">
+          <canvas class="manifesto__canvas" data-manifesto-canvas aria-hidden="true"></canvas>
+
+          <header class="manifesto__head">
+            <p class="mono">Manifiesto</p>
+            <h2 class="sr-only" id="manifesto-title">Manifiesto PULSO</h2>
+          </header>
+
+          <ol class="manifesto__steps">
+            <li class="manifesto__step" data-step>
+              <span class="mono">01 — Forma</span>
+              <p>No hacemos fiestas. <em>Elegimos un lugar y lo convertimos en otra cosa durante una noche.</em></p>
+            </li>
+            <li class="manifesto__step" data-step>
+              <span class="mono">02 — Ruptura</span>
+              <p>Rompemos la nave, la azotea, la galería. <em>La luz y el sonido les dan forma.</em></p>
+            </li>
+            <li class="manifesto__step" data-step>
+              <span class="mono">03 — Portal</span>
+              <p>Lo que queda es un portal. <em>Lo cruzas y, durante unas horas, el resto del mundo deja de existir.</em></p>
+            </li>
+          </ol>
+
+          <div class="manifesto__progress" aria-hidden="true"><span data-manifesto-bar></span></div>
+        </div>
+      </section>
+
+      <section class="events" id="eventos" aria-labelledby="events-title" data-events>
+        <div class="events__bgs" aria-hidden="true" data-events-bgs></div>
+
+        <div class="events__pin" data-events-pin>
+          <header class="events__head">
+            <div>
+              <p class="mono events__kicker">Temporada 26/27 · Madrid</p>
+              <h2 class="events__title" id="events-title">Próximos eventos</h2>
+            </div>
+            <div class="events__controls">
+              <p class="mono events__count" aria-live="polite"><span data-events-current>01</span> / <span data-events-total>04</span></p>
+              <button class="round" type="button" data-events-prev aria-label="Evento anterior">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4" /></svg>
+              </button>
+              <button class="round" type="button" data-events-next aria-label="Evento siguiente">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="events__viewport" data-events-viewport>
+            <ul class="events__track" data-events-track></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery" id="galeria" aria-labelledby="gallery-title">
+        <header class="section-head">
+          <p class="mono section-head__kicker">Archivo audiovisual</p>
+          <h2 class="section-head__title" id="gallery-title">Así fueron otras noches</h2>
+          <p class="section-head__lede">Naves, azoteas y sótanos que durante unas horas fueron otra cosa. Pasa el cursor por encima para verlos en movimiento y ábrelos para entrar.</p>
+        </header>
+        <ul class="gallery__grid" data-gallery></ul>
+      </section>
+
+      <dialog class="project" data-project aria-labelledby="project-title">
+        <div class="project__panel" data-project-panel>
+          <div class="project__art art" data-project-art aria-hidden="true">
+            <span class="art__live"></span>
+          </div>
+          <aside class="project__note" data-project-note>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" /><path d="M8 7.2v4M8 4.8v.01" /></svg>
+            <p>
+              <span class="mono">Concepto de La Trama</span>
+              Ilustración de concepto diseñada para este proyecto. En la web final, aquí va la foto o el vídeo del evento.
+            </p>
+          </aside>
+          <button class="round project__close" type="button" data-project-close aria-label="Cerrar proyecto">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+          <div class="project__body" data-project-body>
+            <p class="mono project__meta" data-project-meta></p>
+            <h2 class="project__title" id="project-title" data-project-title></h2>
+            <p class="project__text" data-project-text></p>
+            <ul class="project__credits mono" data-project-credits></ul>
+            <a class="btn btn--glow" href="#eventos" data-project-events>Ver próximos eventos</a>
+          </div>
+        </div>
+      </dialog>
+
+      <section class="collab" id="colabora" aria-labelledby="collab-title">
+        <header class="section-head">
+          <p class="mono section-head__kicker">Colabora con PULSO</p>
+          <h2 class="section-head__title" id="collab-title">Construyamos la próxima noche</h2>
+          <p class="section-head__lede">Buscamos marcas con algo que contar, artistas con ganas de salirse del formato y espacios que nadie ha imaginado llenos de luz.</p>
+        </header>
+
+        <div class="collab__doors">
+          <button class="door" type="button" data-collab="marca" style="--a: #ff3d9a">
+            <span class="mono door__num">01</span>
+            <span class="door__title">Marcas</span>
+            <span class="door__text">Experiencias a medida, escenarios con tu nombre y activaciones para un público que huye de la publicidad de siempre.</span>
+            <span class="mono door__cta">Proponer colaboración →</span>
+          </button>
+          <button class="door" type="button" data-collab="artista" style="--a: #22d3ee">
+            <span class="mono door__num">02</span>
+            <span class="door__title">Artistas</span>
+            <span class="door__text">DJs, directos, visualistas, escenógrafos. Si tu trabajo cambia cómo se vive un espacio, queremos conocerte.</span>
+            <span class="mono door__cta">Enviar trabajo →</span>
+          </button>
+          <button class="door" type="button" data-collab="espacio" style="--a: #d6ff3d">
+            <span class="mono door__num">03</span>
+            <span class="door__title">Espacios</span>
+            <span class="door__text">¿Tienes una nave, una azotea o un local con historia? Nos ocupamos de los permisos y la producción, y te lo devolvemos tal como estaba.</span>
+            <span class="mono door__cta">Ofrecer espacio →</span>
+          </button>
+        </div>
+
+        <form class="form" data-collab-form novalidate>
+          <div class="form__grid">
+            <label class="field">
+              <span class="field__label mono">Nombre</span>
+              <input name="nombre" type="text" autocomplete="name" required />
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label mono">Email</span>
+              <input name="email" type="email" autocomplete="email" inputmode="email" required />
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label mono">Soy</span>
+              <select name="tipo" required data-collab-type>
+                <option value="">Elige una opción</option>
+                <option value="marca">Una marca</option>
+                <option value="artista">Artista o colectivo</option>
+                <option value="espacio">Tengo un espacio</option>
+                <option value="otro">Otra cosa</option>
+              </select>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label mono">Empresa, proyecto o espacio <i>(opcional)</i></span>
+              <input name="proyecto" type="text" autocomplete="organization" />
+            </label>
+            <label class="field field--full">
+              <span class="field__label mono">Cuéntanos la idea</span>
+              <textarea name="mensaje" rows="4" required minlength="20"></textarea>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+          </div>
+          <label class="check">
+            <input type="checkbox" name="privacidad" required />
+            <span>Acepto la <a href="#privacidad">política de privacidad</a>.</span>
+            <span class="field__error" aria-live="polite"></span>
+          </label>
+          <div class="form__foot">
+            <button class="btn btn--glow" type="submit">Enviar propuesta</button>
+            <p class="form__status" role="status" data-form-status></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="community" aria-labelledby="community-title">
+        <div class="community__inner">
+          <div>
+            <p class="mono section-head__kicker">Comunidad</p>
+            <h2 class="community__title" id="community-title">Entérate antes que nadie</h2>
+            <p class="community__text">Preventa 48 horas antes, ubicaciones que no anunciamos en abierto y lo que pasa detrás del escenario. Como mucho, un correo al mes.</p>
+          </div>
+          <form class="newsletter" data-newsletter novalidate>
+            <label class="sr-only" for="nl-email">Tu correo electrónico</label>
+            <input id="nl-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="Tu correo electrónico" required />
+            <button class="btn btn--glow" type="submit">Unirme</button>
+            <p class="newsletter__status" role="status" data-form-status></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__word" aria-hidden="true">PULSO</p>
+      <div class="footer__cols">
+        <div>
+          <p class="mono footer__label">Estudio</p>
+          <p>Productora creativa de noches electrónicas.<br />Madrid, España.</p>
+        </div>
+        <div>
+          <p class="mono footer__label">Contacto</p>
+          <p><a href="mailto:hola@pulso.example">hola@pulso.example</a><br /><a href="mailto:prensa@pulso.example">prensa@pulso.example</a></p>
+        </div>
+        <div>
+          <p class="mono footer__label">Síguenos</p>
+          <p><a href="https://instagram.com/" rel="noopener">Instagram</a> · <a href="https://www.tiktok.com/" rel="noopener">TikTok</a> · <a href="https://soundcloud.com/" rel="noopener">SoundCloud</a></p>
+        </div>
+        <div>
+          <p class="mono footer__label">Legal</p>
+          <p><a href="#privacidad">Privacidad</a> · <a href="#cookies">Cookies</a> · <a href="#condiciones">Condiciones de venta</a></p>
+        </div>
+      </div>
+      <p class="mono footer__base">© 2026 PULSO · Música, luz y materia en un solo latido</p>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

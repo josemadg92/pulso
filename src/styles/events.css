@@ -1,0 +1,395 @@
+.events {
+  --accent: var(--violet);
+  position: relative;
+}
+
+.events__pin {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- Atmósfera: una capa por evento, fundido cruzado ---------- */
+
+.events__bgs {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--void);
+}
+
+.events__bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(60% 70% at 78% 28%, color-mix(in oklab, var(--a) 34%, transparent), transparent 70%),
+    radial-gradient(55% 60% at 8% 92%, color-mix(in oklab, var(--b) 22%, transparent), transparent 72%),
+    var(--bg);
+  transition: opacity 700ms ease;
+}
+
+.events__bg[data-active] {
+  opacity: 1;
+}
+
+/* ---------- Cabecera ---------- */
+
+.events__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: calc(var(--nav-h) + env(safe-area-inset-top) + 20px) var(--gutter) 24px;
+}
+
+.events__kicker {
+  margin: 0 0 10px;
+  color: var(--accent);
+  transition: color 400ms ease;
+}
+
+.events__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 140, 'wght' 880;
+  font-size: clamp(32px, 4.6vw, 72px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.events__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.events__count {
+  margin: 0 8px 0 0;
+  color: var(--light-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.round {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgb(245 243 255 / 0.28);
+  background: var(--glass);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.round svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.round:active {
+  transform: scale(0.94);
+}
+
+.round:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .round:not(:disabled):hover {
+    border-color: var(--accent);
+  }
+}
+
+/* ---------- Pista de tarjetas ---------- */
+
+.events__viewport {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
+}
+
+.events__track {
+  display: flex;
+  gap: clamp(16px, 2vw, 32px);
+  margin: 0;
+  padding: 0 var(--gutter);
+  list-style: none;
+  will-change: transform;
+}
+
+.event {
+  flex: 0 0 auto;
+  width: min(82vw, 1180px);
+}
+
+.event__card {
+  height: min(68svh, 660px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  border-radius: 20px;
+  border: 1px solid color-mix(in oklab, var(--a) 30%, transparent);
+  background: color-mix(in oklab, var(--bg) 70%, rgb(7 6 12 / 0.4));
+  overflow: hidden;
+  opacity: 0.4;
+  transform: scale(0.95);
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 600ms var(--ease-out),
+    border-color 400ms ease;
+}
+
+.event[data-active] .event__card {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Arte del evento (variantes en art.css) ---------- */
+
+.event__art {
+  container-type: inline-size;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .event[data-active] .event__card:hover .art::before {
+    transform: scale(1.05) rotate(-1deg);
+  }
+}
+
+.event__art-word {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 12px;
+  z-index: 1;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' var(--wdth), 'wght' 900;
+  /* Escala con el ancho de la ilustración: la palabra nunca se parte */
+  font-size: clamp(32px, 14cqi, 120px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in oklab, var(--a) 80%, #fff);
+}
+
+/* ---------- Información ---------- */
+
+.event__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 2.4vw, 36px);
+  overflow: hidden;
+}
+
+.event__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.event__date {
+  display: grid;
+  line-height: 1;
+}
+
+.event__day {
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 100, 'wght' 800;
+  font-size: 44px;
+  color: var(--a);
+}
+
+.event__status {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--a) 50%, transparent);
+  color: var(--a);
+}
+
+.event[data-status='sold-out'] .event__status {
+  border-color: var(--line);
+  color: var(--light-soft);
+  text-decoration: line-through;
+}
+
+.event__series {
+  margin: auto 0 0;
+  color: var(--light-soft);
+}
+
+.event__name {
+  margin: -6px 0 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght);
+  font-size: clamp(48px, 6.2vw, 104px);
+  line-height: 0.88;
+  letter-spacing: var(--track);
+  overflow-wrap: anywhere;
+}
+
+.event__info {
+  display: grid;
+  gap: 8px;
+  margin: 6px 0 0;
+}
+
+.event__info div {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.event__info dt {
+  color: var(--light-soft);
+  padding-top: 2px;
+}
+
+.event__info dd {
+  margin: 0;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.event__buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.event__price {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.event__price .mono {
+  display: block;
+  color: var(--light-soft);
+}
+
+.btn--event {
+  background: var(--a);
+  color: var(--void);
+  box-shadow: 0 8px 30px -10px var(--a);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--event:hover {
+    background: color-mix(in oklab, var(--a) 80%, #fff);
+  }
+}
+
+.event__bar {
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.event__bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--b), var(--a));
+  transform-origin: left;
+}
+
+/* ---------- Carrusel nativo (táctil, pantallas pequeñas, movimiento reducido) ---------- */
+
+.events:not([data-pinned]) .events__viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.events:not([data-pinned]) .events__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.events:not([data-pinned]) .event {
+  scroll-snap-align: start;
+}
+
+.events:not([data-pinned]) .events__track::after {
+  content: '';
+  flex: 0 0 1px; /* deja respirar la última tarjeta */
+}
+
+@media (max-width: 900px) {
+  .event {
+    width: min(86vw, 560px);
+  }
+
+  .event__card {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 26svh auto;
+  }
+
+  .event__series {
+    margin-top: 4px;
+  }
+
+  .event__name {
+    font-size: clamp(44px, 13vw, 76px);
+  }
+}
+
+@media (max-width: 560px) {
+  .events__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .events__controls {
+    width: 100%;
+  }
+
+  .events__count {
+    margin-right: auto;
+  }
+
+  .event__buy .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event__card {
+    transform: none;
+    transition: opacity 300ms ease;
+  }
+
+  .art::before {
+    transition: none;
+  }
+}

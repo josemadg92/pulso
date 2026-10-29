@@ -1,0 +1,377 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  padding-top: calc(var(--nav-h) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* ---------- Fondo audiovisual a pantalla completa ---------- */
+
+.hero__screen {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  /* Respaldo mientras carga WebGL (o si no hay WebGL) */
+  background:
+    radial-gradient(40% 50% at 68% 42%, rgb(139 92 246 / 0.55) 0%, transparent 70%),
+    radial-gradient(50% 40% at 25% 75%, rgb(255 61 154 / 0.3) 0%, transparent 70%),
+    radial-gradient(40% 40% at 85% 80%, rgb(34 211 238 / 0.22) 0%, transparent 70%),
+    var(--void);
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 800ms var(--ease-out);
+}
+
+.hero__screen[data-ready] .hero__canvas {
+  opacity: 1;
+}
+
+/* Oscurece arriba (legibilidad del menú) y funde con la página abajo */
+.hero__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(7 6 12 / 0.55) 0%,
+    transparent 18%,
+    transparent 46%,
+    rgb(7 6 12 / 0.7) 78%,
+    var(--void) 100%
+  );
+}
+
+.hero__scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.16) 0 1px, transparent 1px 3px);
+}
+
+.hero__kicker,
+.hero__axes {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+}
+
+.hero__kicker {
+  top: calc(var(--nav-h) + env(safe-area-inset-top) + 12px);
+  left: var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hero__kicker span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--light-soft);
+}
+
+/* Índice en una línea, a la altura de las etiquetas: lejos del titular */
+.hero__axes {
+  top: calc(var(--nav-h) + env(safe-area-inset-top) + 12px);
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  padding: 6px 0;
+  color: var(--light-soft);
+}
+
+.hero__axes li + li::before {
+  content: '+';
+  margin-right: 10px;
+  color: var(--cyan);
+}
+
+/* ---------- Titular en tres capas (aberración cromática) ---------- */
+
+.hero__title {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  margin: 0;
+  padding: 0 var(--gutter);
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 150, 'wght' 900;
+  font-size: clamp(88px, 21.4vw, 460px);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero__layer {
+  grid-area: 1 / 1;
+  justify-self: start;
+  display: block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: layer-in 1100ms var(--ease-out) both;
+  animation-delay: calc(140ms + var(--layer) * 90ms);
+}
+
+.hero__layer--sodio {
+  --layer: 0;
+  --rest: -0.022em 0.012em;
+  color: var(--magenta);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.hero__layer--uv {
+  --layer: 1;
+  --rest: 0.022em -0.008em;
+  color: var(--cyan);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.hero__layer--tinta {
+  --layer: 2;
+  --rest: 0 0;
+  background: linear-gradient(180deg, #fff 35%, #c9b8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgb(139 92 246 / 0.55));
+}
+
+/* Entrada: `translate` y `clip-path`; el JS mueve `transform` (paralaje), así no se pisan */
+@keyframes layer-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+    translate: 0 0.28em;
+  }
+  to {
+    clip-path: inset(-10% -10% -10% -10%);
+    translate: var(--rest);
+  }
+}
+
+/* ---------- Pie del hero ---------- */
+
+.hero__foot {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) auto minmax(0, 0.9fr);
+  align-items: end;
+  gap: 24px 40px;
+  padding: 20px var(--gutter) max(28px, env(safe-area-inset-bottom));
+}
+
+.hero__lede {
+  max-width: 46ch;
+  margin: 0;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.45;
+  color: var(--light-soft);
+  text-wrap: pretty;
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+[data-reveal] {
+  animation: reveal 700ms var(--ease-out) both;
+  animation-delay: calc(520ms + var(--i, 0) * 60ms);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* ---------- Tarjeta "próximo evento" ---------- */
+
+.next {
+  justify-self: end;
+  width: min(100%, 360px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  touch-action: manipulation;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 200ms ease;
+}
+
+.next:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .next:hover {
+    border-color: rgb(34 211 238 / 0.5);
+  }
+}
+
+.next__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--magenta);
+}
+
+.next__dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--magenta);
+  box-shadow: 0 0 10px var(--magenta);
+}
+
+/* Late a 124 BPM: un latido cada 484ms */
+.next__dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--magenta);
+  animation: beat 484ms var(--ease-out) infinite;
+}
+
+@keyframes beat {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.next__cta {
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: end;
+  color: var(--cyan);
+}
+
+.next__name {
+  grid-column: 1 / -1;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 120, 'wght' 800;
+  font-size: 22px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.next__meta {
+  grid-column: 1 / -1;
+  color: var(--light-soft);
+}
+
+.next__bar {
+  grid-column: 1 / -1;
+  height: 3px;
+  margin-top: 8px;
+  border-radius: 3px;
+  background: rgb(245 243 255 / 0.12);
+  overflow: hidden;
+}
+
+.next__bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  transform: scaleX(var(--sold));
+  transform-origin: left;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .hero__foot {
+    grid-template-columns: 1fr auto;
+  }
+  .next {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+/* Sin sitio para etiquetas e índice en la misma línea: el índice se retira */
+@media (max-width: 1100px) {
+  .hero__axes {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 42svh);
+  }
+
+  .hero__foot {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero__ctas .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .next {
+    width: 100%;
+  }
+}
+
+/* ---------- Movimiento reducido: menos y más suave, no cero ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__layer {
+    animation: fade 400ms ease both;
+    translate: var(--rest);
+  }
+
+  [data-reveal] {
+    animation: fade 400ms ease both;
+  }
+
+  .next__dot::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}

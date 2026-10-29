@@ -1,0 +1,366 @@
+/* ---------- Cabecera de sección compartida ---------- */
+
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  align-items: end;
+  gap: 16px 48px;
+  padding: 0 var(--gutter);
+  margin-bottom: clamp(28px, 4vw, 56px);
+}
+
+.section-head__kicker {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--cyan);
+}
+
+.section-head__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 140, 'wght' 880;
+  font-size: clamp(36px, 5vw, 80px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.section-head__lede {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--light-soft);
+  font-size: clamp(16px, 1.2vw, 18px);
+  text-wrap: pretty;
+}
+
+@media (max-width: 1100px) {
+  .section-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Mosaico irregular ---------- */
+
+.gallery {
+  padding: clamp(96px, 12vw, 180px) 0 clamp(64px, 8vw, 120px);
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: clamp(140px, 15vw, 250px);
+  grid-auto-flow: dense;
+  gap: clamp(8px, 1vw, 16px);
+  margin: 0;
+  padding: 0 var(--gutter);
+  list-style: none;
+}
+
+.tile--xl {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+.tile--tall {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.tile--wide {
+  grid-column: span 2;
+}
+.tile--sm {
+  grid-column: span 1;
+}
+
+.tile__btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 250ms ease;
+}
+
+.tile__btn:active {
+  transform: scale(0.98);
+}
+
+.tile__media {
+  position: absolute;
+  inset: 0;
+}
+
+.tile__file {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.tile__type {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--light-soft);
+  font-size: 11px;
+}
+
+.tile__caption {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+}
+
+.tile__caption .mono {
+  color: var(--a);
+  font-size: 11px;
+}
+
+.tile__title {
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 110, 'wght' 750;
+  font-size: clamp(16px, 1.4vw, 22px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+/* Al pasar por encima (o enfocar con teclado) la pieza cobra vida.
+   Transición, no keyframes: si el cursor sale a mitad, vuelve desde donde esté. */
+.tile__media::before {
+  transition: transform 700ms var(--ease-out);
+}
+
+.tile__media .art__live {
+  transition: opacity 300ms ease;
+}
+
+.tile__btn:focus-visible .art::before {
+  transform: scale(1.1) translate3d(-2%, -1.5%, 0) rotate(-1deg);
+  transition-duration: 2.4s;
+}
+.tile__btn:focus-visible .art__live {
+  opacity: 1;
+  animation: art-sweep 1.8s ease-in-out infinite alternate;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tile__btn:hover {
+    border-color: color-mix(in oklab, var(--a) 60%, transparent);
+  }
+  .tile__btn:hover .art::before {
+    transform: scale(1.1) translate3d(-2%, -1.5%, 0) rotate(-1deg);
+    transition-duration: 2.4s;
+  }
+  .tile__btn:hover .art__live {
+    opacity: 1;
+    animation: art-sweep 1.8s ease-in-out infinite alternate;
+  }
+  .tile__btn:hover .tile__file {
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 44vw;
+  }
+  .tile--xl {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  .tile--tall {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  .tile--wide {
+    grid-column: span 2;
+  }
+}
+
+/* ---------- Proyecto abierto: la pantalla se transforma ---------- */
+
+.project {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--light);
+  overflow: hidden;
+}
+
+.project::backdrop {
+  background: transparent;
+}
+
+.project__panel {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.project__art {
+  position: absolute;
+  inset: 0;
+}
+
+/* En el proyecto abierto el arte siempre está vivo */
+.project__art::before {
+  animation: art-drift 6s ease-in-out infinite alternate;
+}
+.project__art .art__live {
+  opacity: 0.8;
+  animation: art-sweep 3.2s ease-in-out infinite alternate;
+}
+.project__art::after {
+  background: linear-gradient(to top, rgb(7 6 12 / 0.92) 0%, rgb(7 6 12 / 0.5) 40%, transparent 70%);
+}
+
+/* Aviso de pieza conceptual: discreto, pero imposible de no ver */
+.project__note {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  left: var(--gutter);
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: min(420px, calc(100% - 2 * var(--gutter) - 64px));
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.project__note[hidden] {
+  display: none;
+}
+
+.project__note svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.project__note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--light-soft);
+}
+
+.project__note .mono {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11px;
+  color: var(--cyan);
+}
+
+.project__close {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  right: var(--gutter);
+  z-index: 2;
+}
+
+.project__body {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: max(32px, env(safe-area-inset-bottom));
+  z-index: 2;
+  max-width: 960px;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+
+.project__meta {
+  margin: 0;
+  color: var(--a);
+}
+
+.project__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 140, 'wght' 880;
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-wrap: balance;
+}
+
+.project__text {
+  margin: 0;
+  max-width: 52ch;
+  font-size: clamp(16px, 1.3vw, 19px);
+  color: var(--light-soft);
+}
+
+.project__credits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+  color: var(--light-soft);
+}
+
+.is-locked,
+.is-locked body {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile__btn:hover .art::before,
+  .tile__btn:focus-visible .art::before {
+    transform: none;
+  }
+  .project__art::before {
+    animation: none;
+  }
+  .tile__btn:hover .art__live,
+  .tile__btn:focus-visible .art__live,
+  .project__art .art__live {
+    animation: none;
+    opacity: 0.5;
+    translate: 0 0;
+  }
+}

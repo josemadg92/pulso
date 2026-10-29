@@ -1,0 +1,170 @@
+.manifesto {
+  position: relative;
+  height: 340svh;
+}
+
+.manifesto__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: radial-gradient(60% 60% at 70% 50%, rgb(91 43 255 / 0.18), transparent 70%), var(--void);
+}
+
+.manifesto__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 800ms var(--ease-out);
+}
+
+.manifesto__canvas[data-ready] {
+  opacity: 1;
+}
+
+/* Sombra bajo el texto para que la figura nunca le robe legibilidad */
+.manifesto__sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(7 6 12 / 0.85) 0%, rgb(7 6 12 / 0.4) 38%, transparent 60%);
+}
+
+.manifesto__head,
+.manifesto__steps,
+.manifesto__progress {
+  z-index: 1;
+}
+
+.manifesto__head {
+  position: absolute;
+  top: calc(var(--nav-h) + env(safe-area-inset-top) + 16px);
+  left: var(--gutter);
+  color: var(--cyan);
+}
+
+.manifesto__head p {
+  margin: 0;
+}
+
+.manifesto__steps {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 14svh;
+  width: min(100% - 2 * var(--gutter), 760px);
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cambio de frase: la saliente se va rápido, la entrante llega después y más despacio */
+.manifesto__step {
+  grid-area: 1 / 1;
+  opacity: 0;
+  translate: 0 24px;
+  filter: blur(6px);
+  transition:
+    opacity 250ms var(--ease-out),
+    translate 250ms var(--ease-out),
+    filter 250ms var(--ease-out);
+}
+
+.manifesto__step[data-active] {
+  opacity: 1;
+  translate: 0 0;
+  filter: blur(0);
+  transition:
+    opacity 600ms var(--ease-out) 150ms,
+    translate 700ms var(--ease-out) 150ms,
+    filter 600ms var(--ease-out) 150ms;
+}
+
+.manifesto__step .mono {
+  color: var(--magenta);
+}
+
+.manifesto__step p {
+  margin: 14px 0 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 112, 'wght' 760;
+  font-size: clamp(32px, 4.6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  text-shadow: 0 2px 30px rgb(7 6 12 / 0.8);
+}
+
+.manifesto__step em {
+  display: block;
+  max-width: 44ch;
+  margin-top: 18px;
+  font-family: var(--f-text);
+  font-variation-settings: normal;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: var(--light-soft);
+}
+
+.manifesto__progress {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: max(32px, env(safe-area-inset-bottom));
+  height: 1px;
+  background: var(--line);
+}
+
+.manifesto__progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 760px) {
+  .manifesto__steps {
+    bottom: 10svh;
+  }
+}
+
+/* Movimiento reducido: sin escena anclada, las tres frases se leen seguidas */
+.manifesto[data-static] {
+  height: auto;
+}
+
+.manifesto[data-static] .manifesto__sticky {
+  position: relative;
+  height: auto;
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + 64px) 0 96px;
+}
+
+.manifesto[data-static] .manifesto__canvas {
+  opacity: 0.45;
+}
+
+.manifesto[data-static] .manifesto__steps {
+  position: relative;
+  inset: auto;
+  margin: 0 var(--gutter);
+  gap: 64px;
+}
+
+.manifesto[data-static] .manifesto__step {
+  grid-area: auto;
+  opacity: 1;
+  translate: none;
+  filter: none;
+}
+
+.manifesto[data-static] .manifesto__progress {
+  display: none;
+}
