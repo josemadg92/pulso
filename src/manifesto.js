@@ -36,16 +36,22 @@ export function initManifesto() {
     setActive(0);
   }
 
-  // La escena 3D se carga cuando el manifiesto está a punto de entrar
-  const io = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry.isIntersecting) return;
-      io.disconnect();
-      import('./manifesto-scene.js')
-        .then(({ createManifestoScene }) => createManifestoScene({ canvas, section, state, reduce }))
-        .catch((err) => console.warn('[PULSO] Manifiesto sin WebGL.', err));
-    },
-    { rootMargin: '50% 0px' },
-  );
+  // La escena 3D se prepara en un momento tranquilo tras cargar el hero, no mientras
+  // el usuario hace scroll hacia el manifiesto. Si llega antes, se prepara al acercarse.
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    io.disconnect();
+    import('./manifesto-scene.js')
+      .then(({ createManifestoScene }) => createManifestoScene({ canvas, section, state, reduce }))
+      .catch((err) => console.warn('[PULSO] Manifiesto sin WebGL.', err));
+  };
+  const io = new IntersectionObserver(([entry]) => entry.isIntersecting && start(), { rootMargin: '50% 0px' });
   io.observe(section);
+  window.addEventListener(
+    'load',
+    () => ('requestIdleCallback' in window ? requestIdleCallback(start, { timeout: 2500 }) : setTimeout(start, 1500)),
+    { once: true },
+  );
 }

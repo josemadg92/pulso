@@ -10,7 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 export const lenis =
   prefersReducedMotion() || window.matchMedia('(pointer: coarse)').matches
     ? null
-    : new Lenis({ lerp: 0.1, anchors: { offset: -8 } });
+    : // lerp 0.15: responde antes a la rueda y se asienta sin quedarse flotando
+      new Lenis({ lerp: 0.15, anchors: { offset: -8 } });
 
 if (lenis) {
   lenis.on('scroll', ScrollTrigger.update);

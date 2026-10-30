@@ -19,7 +19,7 @@ const paletteUniforms = () => ({
   uLight: { value: PALETTE.light },
 });
 
-export function createScene({ canvas, screen, pointer, reduce }) {
+export async function createScene({ canvas, screen, pointer, reduce }) {
   const lowPower = (navigator.hardwareConcurrency ?? 8) <= 4 || window.matchMedia('(pointer: coarse)').matches;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPower, alpha: false, powerPreference: 'high-performance' });
@@ -273,6 +273,11 @@ export function createScene({ canvas, screen, pointer, reduce }) {
     running = false;
     cancelAnimationFrame(raf);
   };
+
+  // Shaders compilados en segundo plano antes del primer dibujo: compilarlos de golpe
+  // congelaría el navegador un instante, y si coincide con el scroll se nota como un tirón.
+  await renderer.compileAsync(fogScene, camera);
+  await renderer.compileAsync(scene, camera);
 
   new ResizeObserver(resize).observe(screen);
   new IntersectionObserver(([entry]) => {

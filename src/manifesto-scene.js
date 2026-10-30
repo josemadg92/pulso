@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { frameDue } from './render-budget.js';
 
 // Una esfera de esquirlas que gira (01), estalla (02) y se recompone en un anillo-portal (03).
-export function createManifestoScene({ canvas, section, state, reduce }) {
+export async function createManifestoScene({ canvas, section, state, reduce }) {
   const lowPower = (navigator.hardwareConcurrency ?? 8) <= 4 || window.matchMedia('(pointer: coarse)').matches;
   const COUNT = lowPower ? 900 : 1800;
 
@@ -164,6 +164,9 @@ export function createManifestoScene({ canvas, section, state, reduce }) {
     running = false;
     cancelAnimationFrame(raf);
   };
+
+  // Mismo motivo que en el hero: compilar sin bloquear antes del primer dibujo
+  await renderer.compileAsync(scene, camera);
 
   new ResizeObserver(resize).observe(canvas);
   new IntersectionObserver(([entry]) => (entry.isIntersecting ? play() : pause())).observe(section);
