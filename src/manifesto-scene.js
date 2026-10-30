@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { frameDue } from './render-budget.js';
 
 // Una esfera de esquirlas que gira (01), estalla (02) y se recompone en un anillo-portal (03).
 export function createManifestoScene({ canvas, section, state, reduce }) {
@@ -148,9 +149,10 @@ export function createManifestoScene({ canvas, section, state, reduce }) {
   let raf = 0;
   let prev = 0;
   const loop = (now) => {
+    raf = requestAnimationFrame(loop);
+    if (!frameDue(now, prev)) return;
     render(Math.min(0.05, (now - prev) / 1000));
     prev = now;
-    raf = requestAnimationFrame(loop);
   };
   const play = () => {
     if (running || reduce || document.hidden) return;

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { createSpring } from './spring.js';
 import { noise3 } from './shaders/noise.js';
+import { frameDue } from './render-budget.js';
 
 const PALETTE = {
   void: new THREE.Color('#07060c'),
@@ -30,6 +31,12 @@ export function createScene({ canvas, screen, pointer, reduce }) {
   camera.position.set(0, 0, 7);
 
   // ---------- Fondo: nebulosa de luz de escenario ----------
+  // Se calcula en un búfer a media resolución: son formas grandes y suaves, así que al
+  // ampliarlo no se pierde nada y la parte más cara cuesta la cuarta parte. Media precisión
+  // de coma flotante para que los degradados oscuros no hagan bandas.
+  const FOG_SCALE = 0.5;
+  const fogTarget = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false });
+  const fogScene = new THREE.Scene();
   const bgUniforms = {
     uTime: { value: 0 },
     uRes: { value: new THREE.Vector2(1, 1) },
@@ -89,20 +96,47 @@ export function createScene({ canvas, screen, pointer, reduce }) {
           col += uViolet * 0.5 * exp(-dot(d, d) * 5.0);
           col += uMagenta * 0.12 * exp(-dot(d, d) * 16.0);
 
-          // Viñeta y grano de película
+          // Viñeta (el grano va en la pasada a resolución completa)
           col *= smoothstep(1.35, 0.2, length((uv - 0.5) * vec2(1.2, 1.0)));
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+    }),
+  );
+  background.frustumCulled = false;
+  fogScene.add(background);
+
+  // Pasada a resolución completa: amplía la niebla y añade el grano de película píxel a píxel
+  const compositeUniforms = { tFog: { value: fogTarget.texture }, uTime: bgUniforms.uTime };
+  const composite = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    new THREE.ShaderMaterial({
+      uniforms: compositeUniforms,
+      depthTest: false,
+      depthWrite: false,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main() { vUv = position.xy * 0.5 + 0.5; gl_Position = vec4(position.xy, 0.0, 1.0); }
+      `,
+      fragmentShader: /* glsl */ `
+        precision highp float;
+        uniform sampler2D tFog;
+        uniform float uTime;
+        varying vec2 vUv;
+        void main() {
+          vec3 col = texture2D(tFog, vUv).rgb;
           float grain = fract(sin(dot(gl_FragCoord.xy + fract(uTime) * 91.0, vec2(12.9898, 78.233))) * 43758.5453);
           col += (grain - 0.5) * 0.035;
-
           gl_FragColor = vec4(col, 1.0);
           #include <colorspace_fragment>
         }
       `,
     }),
   );
-  background.frustumCulled = false;
-  background.renderOrder = -1;
-  scene.add(background);
+  composite.frustumCulled = false;
+  composite.renderOrder = -1;
+  scene.add(composite);
 
   // ---------- Escultura de vidrio líquido ----------
   const blobUniforms = {
@@ -174,7 +208,10 @@ export function createScene({ canvas, screen, pointer, reduce }) {
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    bgUniforms.uRes.value.set(width * renderer.getPixelRatio(), height * renderer.getPixelRatio());
+    const fogW = Math.max(1, Math.round(width * renderer.getPixelRatio() * FOG_SCALE));
+    const fogH = Math.max(1, Math.round(height * renderer.getPixelRatio() * FOG_SCALE));
+    fogTarget.setSize(fogW, fogH);
+    bgUniforms.uRes.value.set(fogW, fogH);
 
     // En panorámico la escultura va a la derecha, por encima del titular; en vertical, centrada arriba
     const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
@@ -210,6 +247,9 @@ export function createScene({ canvas, screen, pointer, reduce }) {
     bgUniforms.uTime.value = time;
     blobUniforms.uTime.value = time;
     blobUniforms.uEnergy.value = energy;
+    renderer.setRenderTarget(fogTarget);
+    renderer.render(fogScene, camera);
+    renderer.setRenderTarget(null);
     renderer.render(scene, camera);
   };
 
@@ -217,10 +257,11 @@ export function createScene({ canvas, screen, pointer, reduce }) {
   let raf = 0;
   let prev = 0;
   const loop = (now) => {
+    raf = requestAnimationFrame(loop);
+    if (!frameDue(now, prev)) return;
     const dt = Math.min(0.05, (now - prev) / 1000);
     prev = now;
     render(dt);
-    raf = requestAnimationFrame(loop);
   };
   const play = () => {
     if (running || reduce || !visible || document.hidden) return;
