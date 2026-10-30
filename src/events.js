@@ -48,9 +48,9 @@ function cardTemplate(ev, i, total) {
             <p class="event__price"><span class="mono">Desde</span> ${euro.format(ev.priceFrom)}</p>
             ${
               soldOut
-                ? `<a class="btn btn--ghost" href="${ev.tickets}?waitlist=1">Lista de espera</a>`
-                : `<a class="btn btn--event" href="${ev.tickets}">Comprar entradas
-                     <svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg></a>`
+                ? `<button class="btn btn--ghost" type="button" data-tickets="${ev.id}">Lista de espera</button>`
+                : `<button class="btn btn--event" type="button" data-tickets="${ev.id}">Comprar entradas
+                     <svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg></button>`
             }
           </div>
 

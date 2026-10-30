@@ -25,9 +25,9 @@ function validate(el) {
   return !msg;
 }
 
-// Formulario con validación propia y estado de envío. Sin backend todavía:
-// `send` simula la llamada; sustituir por el endpoint o CRM del cliente.
-function enhance(form, { success, send = () => new Promise((r) => setTimeout(r, 700)) }) {
+// Formulario con validación propia y estado de envío. En este concepto no hay envío real:
+// `send` simula la llamada; en producción se sustituye por el endpoint o CRM del cliente.
+export function enhance(form, { success, send = () => new Promise((r) => setTimeout(r, 700)) }) {
   const status = form.querySelector('[data-form-status]');
   const submit = form.querySelector('[type="submit"]');
   const controls = [...form.elements].filter((el) => el.willValidate);
@@ -60,7 +60,7 @@ function enhance(form, { success, send = () => new Promise((r) => setTimeout(r, 
       status.textContent = success;
     } catch {
       status.dataset.state = 'error';
-      status.textContent = 'No se ha podido enviar. Prueba otra vez o escríbenos a hola@pulso.example.';
+      status.textContent = 'No se ha podido enviar. Prueba otra vez en unos minutos.';
     } finally {
       submit.disabled = false;
       submit.textContent = label;
@@ -71,7 +71,7 @@ function enhance(form, { success, send = () => new Promise((r) => setTimeout(r, 
 export function initForms() {
   const collab = document.querySelector('[data-collab-form]');
   if (collab) {
-    enhance(collab, { success: '¡Gracias! Lo hemos recibido y te contestamos en menos de 48 horas.' });
+    enhance(collab, { success: 'Todo correcto. En la web final, tu propuesta llegaría al equipo de PULSO y te contestarían en menos de 48 horas.' });
 
     const type = collab.querySelector('[data-collab-type]');
     const doors = [...document.querySelectorAll('[data-collab]')];
@@ -91,5 +91,5 @@ export function initForms() {
   }
 
   const newsletter = document.querySelector('[data-newsletter]');
-  if (newsletter) enhance(newsletter, { success: '¡Ya casi estás! Revisa tu correo para confirmar la suscripción.' });
+  if (newsletter) enhance(newsletter, { success: 'Todo correcto. En la web final, ahora recibirías un correo para confirmar la suscripción.' });
 }

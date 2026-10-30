@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/src/styles/events.css" />
     <link rel="stylesheet" href="/src/styles/gallery.css" />
     <link rel="stylesheet" href="/src/styles/collab.css" />
+    <link rel="stylesheet" href="/src/styles/overlays.css" />
   </head>
   <body>
     <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -92,7 +93,7 @@
             <a class="btn btn--ghost" href="#manifiesto">Manifiesto</a>
           </div>
 
-          <a class="next" href="#eventos" data-reveal>
+          <a class="next" href="#eventos" data-tickets="nave-04" data-reveal>
             <span class="next__live mono"><span class="next__dot" aria-hidden="true"></span>Próximo</span>
             <span class="next__name">NAVE 04 — Sodio</span>
             <span class="next__meta mono">14.11.26 · Villaverde, Madrid</span>
@@ -253,13 +254,14 @@
           </div>
           <label class="check">
             <input type="checkbox" name="privacidad" required />
-            <span>Acepto la <a href="#privacidad">política de privacidad</a>.</span>
+            <span>Acepto la <button class="linkish" type="button" data-concept="privacidad">política de privacidad</button>.</span>
             <span class="field__error" aria-live="polite"></span>
           </label>
           <div class="form__foot">
             <button class="btn btn--glow" type="submit">Enviar propuesta</button>
             <p class="form__status" role="status" data-form-status></p>
           </div>
+          <p class="form__note"><span class="mono">Concepto de La Trama</span> · Formulario de demostración: no se envía ningún dato.</p>
         </form>
       </section>
 
@@ -276,6 +278,7 @@
             <button class="btn btn--glow" type="submit">Unirme</button>
             <p class="newsletter__status" role="status" data-form-status></p>
           </form>
+          <p class="form__note"><span class="mono">Concepto de La Trama</span> · Suscripción de demostración: no se guarda ningún correo.</p>
         </div>
       </section>
     </main>
@@ -289,19 +292,46 @@
         </div>
         <div>
           <p class="mono footer__label">Contacto</p>
-          <p><a href="mailto:hola@pulso.example">hola@pulso.example</a><br /><a href="mailto:prensa@pulso.example">prensa@pulso.example</a></p>
+          <p><button class="linkish" type="button" data-concept="contacto">Escríbenos</button><br /><button class="linkish" type="button" data-concept="prensa">Prensa</button></p>
         </div>
         <div>
           <p class="mono footer__label">Síguenos</p>
-          <p><a href="https://instagram.com/" rel="noopener">Instagram</a> · <a href="https://www.tiktok.com/" rel="noopener">TikTok</a> · <a href="https://soundcloud.com/" rel="noopener">SoundCloud</a></p>
+          <p><button class="linkish" type="button" data-concept="instagram">Instagram</button> · <button class="linkish" type="button" data-concept="tiktok">TikTok</button> · <button class="linkish" type="button" data-concept="soundcloud">SoundCloud</button></p>
         </div>
         <div>
           <p class="mono footer__label">Legal</p>
-          <p><a href="#privacidad">Privacidad</a> · <a href="#cookies">Cookies</a> · <a href="#condiciones">Condiciones de venta</a></p>
+          <p><button class="linkish" type="button" data-concept="privacidad">Privacidad</button> · <button class="linkish" type="button" data-concept="cookies">Cookies</button> · <button class="linkish" type="button" data-concept="condiciones">Condiciones de venta</button></p>
         </div>
       </div>
       <p class="mono footer__base">© 2026 PULSO · Música, luz y materia en un solo latido</p>
     </footer>
+
+    <dialog class="overlay" data-tickets-dialog aria-labelledby="tickets-title">
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="sheet" data-overlay-panel>
+        <header class="sheet__head">
+          <div>
+            <p class="mono sheet__kicker" data-t-kicker></p>
+            <h2 class="sheet__title" id="tickets-title" data-t-title></h2>
+            <p class="sheet__meta" data-t-meta></p>
+          </div>
+          <button class="round" type="button" data-overlay-close aria-label="Cerrar">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </header>
+        <div class="sheet__body" data-t-body></div>
+      </div>
+    </dialog>
+
+    <dialog class="overlay overlay--center" data-concept-dialog aria-labelledby="concept-title">
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="notice" data-overlay-panel>
+        <p class="mono notice__kicker">Concepto de La Trama</p>
+        <h2 class="notice__title" id="concept-title" data-c-title></h2>
+        <p class="notice__text" data-c-text></p>
+        <button class="btn btn--glow" type="button" data-overlay-close>Entendido</button>
+      </div>
+    </dialog>
 
     <script type="module" src="/src/main.js"></script>
   </body>

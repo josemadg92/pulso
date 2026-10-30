@@ -5,6 +5,8 @@ import { initManifesto } from './manifesto.js';
 import { initEvents } from './events.js';
 import { initGallery } from './gallery.js';
 import { initForms } from './forms.js';
+import { initTickets } from './tickets.js';
+import { initConcept } from './concept.js';
 
 initNav();
 initHero();
@@ -12,3 +14,5 @@ initManifesto();
 initEvents();
 initGallery();
 initForms();
+initTickets();
+initConcept();

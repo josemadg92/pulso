@@ -13,7 +13,6 @@ export const EVENTS = [
     priceFrom: 28,
     status: 'last',
     sold: 0.82,
-    tickets: 'https://tickets.pulso.example/nave-04',
     theme: { a: '#ff5b2e', b: '#ff3d9a', bg: '#1a0607', art: 'beams', wdth: 150, wght: 900, track: -0.03 },
   },
   {
@@ -28,7 +27,6 @@ export const EVENTS = [
     priceFrom: 32,
     status: 'on-sale',
     sold: 0.46,
-    tickets: 'https://tickets.pulso.example/azotea-prisma',
     theme: { a: '#22d3ee', b: '#a5f3fc', bg: '#03131a', art: 'prism', wdth: 50, wght: 820, track: 0.01 },
   },
   {
@@ -43,7 +41,6 @@ export const EVENTS = [
     priceFrom: 24,
     status: 'on-sale',
     sold: 0.31,
-    tickets: 'https://tickets.pulso.example/galeria-materia',
     theme: { a: '#d6ff3d', b: '#8b5cf6', bg: '#0b0e04', art: 'grid', wdth: 130, wght: 220, track: -0.01 },
   },
   {
@@ -58,7 +55,6 @@ export const EVENTS = [
     priceFrom: 30,
     status: 'sold-out',
     sold: 1,
-    tickets: 'https://tickets.pulso.example/subsuelo-eco',
     theme: { a: '#8b5cf6', b: '#ff3d9a', bg: '#0a0617', art: 'orb', wdth: 90, wght: 640, track: 0.04 },
   },
 ];

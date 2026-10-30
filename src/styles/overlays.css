@@ -1,0 +1,408 @@
+/* ---------- Capa base de los diálogos ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--light);
+  overflow: hidden;
+}
+
+.overlay::backdrop {
+  background: transparent;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(7 6 12 / 0.66);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ---------- Panel de entradas ---------- */
+
+.sheet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(460px, 100%);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid color-mix(in oklab, var(--a) 30%, transparent);
+  background:
+    radial-gradient(80% 40% at 100% 0%, color-mix(in oklab, var(--a) 22%, transparent), transparent 70%),
+    var(--void-2);
+  overflow: hidden;
+}
+
+.sheet__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: max(24px, env(safe-area-inset-top)) 24px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet__kicker {
+  margin: 0 0 6px;
+  color: var(--a);
+}
+
+.sheet__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 130, 'wght' 860;
+  font-size: 40px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+}
+
+.sheet__meta {
+  margin: 10px 0 0;
+  color: var(--light-soft);
+  font-size: 14px;
+}
+
+.sheet__meta::first-letter {
+  text-transform: uppercase;
+}
+
+.sheet__head .round {
+  flex-shrink: 0;
+}
+
+.sheet__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 24px max(24px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sheet__lede {
+  margin: 0;
+  color: var(--light-soft);
+}
+
+.tiers {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tier {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'info price'
+    'info stepper';
+  align-items: center;
+  gap: 6px 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgb(7 6 12 / 0.4);
+}
+
+.tier[data-sold-out] {
+  opacity: 0.5;
+}
+
+.tier__info {
+  grid-area: info;
+  min-width: 0;
+}
+
+.tier__name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.tier__note {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--light-soft);
+}
+
+.tier__price {
+  grid-area: price;
+  justify-self: end;
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tier__out {
+  grid-area: stepper;
+  justify-self: end;
+  margin: 0;
+  color: var(--light-soft);
+}
+
+.stepper {
+  grid-area: stepper;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stepper__btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(245 243 255 / 0.24);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    transform 120ms var(--ease-out),
+    border-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.stepper__btn:active {
+  transform: scale(0.92);
+}
+
+.stepper__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .stepper__btn:not(:disabled):hover {
+    border-color: var(--a);
+  }
+}
+
+.stepper__qty {
+  min-width: 2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.sheet__summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.sheet__summary .mono {
+  margin: 0;
+  color: var(--light-soft);
+}
+
+.sheet__total {
+  margin: 4px 0 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: 36px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet__fees {
+  max-width: 24ch;
+  text-align: right;
+  font-size: 11px !important;
+}
+
+.sheet__cta {
+  width: 100%;
+  justify-content: center;
+}
+
+.sheet__cta:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+.receipt {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.receipt li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt__total {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sheet .newsletter {
+  grid-template-columns: 1fr;
+}
+
+.sheet .newsletter .btn {
+  justify-content: center;
+}
+
+/* Hoja inferior en móvil */
+@media (max-width: 640px) {
+  .sheet {
+    top: auto;
+    left: 0;
+    width: 100%;
+    max-height: 90svh;
+    border-left: 0;
+    border-top: 1px solid color-mix(in oklab, var(--a) 30%, transparent);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .sheet__title {
+    font-size: 32px;
+  }
+}
+
+/* ---------- Aviso centrado ---------- */
+
+.overlay--center {
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+}
+
+.overlay--center:not([open]) {
+  display: none;
+}
+
+.notice {
+  position: relative;
+  width: min(440px, 100%);
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(70% 60% at 0% 0%, rgb(91 43 255 / 0.3), transparent 70%),
+    var(--void-2);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.6);
+}
+
+.notice__kicker {
+  margin: 0;
+  color: var(--cyan);
+}
+
+.notice__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'wdth' 125, 'wght' 820;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.notice__text {
+  margin: 0 0 8px;
+  color: var(--light-soft);
+}
+
+/* ---------- Notas de concepto ---------- */
+
+.concept-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgb(7 6 12 / 0.4);
+}
+
+.concept-note svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.concept-note p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--light-soft);
+}
+
+.concept-note .mono {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11px;
+  color: var(--cyan);
+}
+
+.form__note {
+  grid-column: 1 / -1;
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--light-soft);
+}
+
+.form__note .mono {
+  font-size: 11px;
+  color: var(--cyan);
+}
+
+/* Botones que se leen como enlaces (pie, casilla de privacidad) */
+.linkish {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--light);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.check .linkish {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .linkish:hover {
+    color: var(--cyan);
+  }
+}
